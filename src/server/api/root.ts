@@ -1,4 +1,7 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
+import { agendamentoRouter } from "./agendamento/routes";
+import { consultaRouter } from "./consulta/routes";
+import { pacienteRouter } from "./paciente/routes";
 import { postoRouter } from "./posto/route";
 import { profissionalRouter } from "./profissional/routes";
 
@@ -10,6 +13,9 @@ import { profissionalRouter } from "./profissional/routes";
 export const appRouter = createTRPCRouter({
   posto: postoRouter,
   profissional: profissionalRouter,
+  consulta: consultaRouter,
+  agendamento: agendamentoRouter,
+  paciente: pacienteRouter,
 });
 
 // export type definition of API

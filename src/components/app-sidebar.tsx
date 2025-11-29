@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Home, Pill, Syringe, UserRound } from "lucide-react";
+import { Calendar, CalendarCheck, Home, Pill, Syringe, User, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -23,6 +23,16 @@ const menuItems = [
     title: "Página Principal",
     url: "/dashboard",
     icon: Home,
+  },
+  {
+    title: "Pacientes",
+    url: "/dashboard/pacientes",
+    icon: User,
+  },
+  {
+    title: "Agendamentos",
+    url: "/dashboard/agendamentos",
+    icon: CalendarCheck,
   },
   {
     title: "Consultas",
