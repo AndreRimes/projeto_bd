@@ -76,12 +76,10 @@ export function PrescricoesPage() {
 
   const utils = api.useUtils();
 
-  // Queries
   const { data: prescricoes, isLoading } = api.prescricao.getAll.useQuery();
   const { data: consultas } = api.consulta.getAll.useQuery();
   const { data: medicamentos } = api.medicamento.getAll.useQuery();
 
-  // Mutations
   const createMutation = api.prescricao.create.useMutation({
     onSuccess: () => {
       utils.prescricao.getAll.invalidate();
@@ -178,7 +176,6 @@ export function PrescricoesPage() {
     if (!prescricao) return;
     setSelectedPrescricao(prescricao);
 
-    // Buscar medicamentos da prescrição
     const meds = await utils.prescricao.getMedicamentos.fetch({
       id_prescricao: prescricao.id_prescricao,
     });

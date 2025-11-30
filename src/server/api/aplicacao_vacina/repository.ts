@@ -69,7 +69,6 @@ export async function createAplicacaoVacina(
   },
   db: Pool,
 ): Promise<QueryResult<AplicacaoVacinaRow>> {
-  // Usando stored procedure que registra a aplicação e atualiza o estoque automaticamente
   const result = await db.query(
     `SELECT * FROM sp_registrar_aplicacao_vacina($1, $2, $3, $4, $5, $6)`,
     [

@@ -14,7 +14,6 @@ import {
   updateMedicamento,
 } from "./repository";
 
-// Router de Medicamentos
 export const medicamentoRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const result = await getAllMedicamentos(ctx.db);
@@ -106,7 +105,6 @@ export const medicamentoRouter = createTRPCRouter({
     }),
 });
 
-// Router de Estoque de Medicamentos
 export const estoqueMedicamentosRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
     const result = await getEstoquesMedicamentosByPosto(

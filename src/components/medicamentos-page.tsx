@@ -33,7 +33,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 
-// Schemas
 const medicamentoSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
 });
@@ -46,7 +45,6 @@ const estoqueMedicamentosSchema = z.object({
 });
 
 export function MedicamentosPage() {
-  // Estados para Medicamentos
   const [isCreateMedicamentoOpen, setIsCreateMedicamentoOpen] = useState(false);
   const [isEditMedicamentoOpen, setIsEditMedicamentoOpen] = useState(false);
   const [isDeleteMedicamentoOpen, setIsDeleteMedicamentoOpen] = useState(false);
@@ -56,7 +54,6 @@ export function MedicamentosPage() {
   });
   const [medicamentoErrors, setMedicamentoErrors] = useState<any>({});
 
-  // Estados para Estoque
   const [isCreateEstoqueOpen, setIsCreateEstoqueOpen] = useState(false);
   const [isEditEstoqueOpen, setIsEditEstoqueOpen] = useState(false);
   const [isDeleteEstoqueOpen, setIsDeleteEstoqueOpen] = useState(false);
@@ -71,13 +68,11 @@ export function MedicamentosPage() {
 
   const utils = api.useUtils();
 
-  // Queries
   const { data: medicamentos, isLoading: loadingMedicamentos } =
     api.medicamento.getAll.useQuery();
   const { data: estoques, isLoading: loadingEstoques } =
     api.estoqueMedicamentos.getAll.useQuery();
 
-  // Mutations - Medicamentos
   const createMedicamentoMutation = api.medicamento.create.useMutation({
     onSuccess: () => {
       utils.medicamento.getAll.invalidate();
@@ -103,7 +98,6 @@ export function MedicamentosPage() {
     },
   });
 
-  // Mutations - Estoque
   const createEstoqueMutation = api.estoqueMedicamentos.create.useMutation({
     onSuccess: () => {
       utils.estoqueMedicamentos.getAll.invalidate();
@@ -129,7 +123,6 @@ export function MedicamentosPage() {
     },
   });
 
-  // Reset Forms
   const resetMedicamentoForm = () => {
     setMedicamentoFormData({
       nome: "",
@@ -147,7 +140,6 @@ export function MedicamentosPage() {
     setEstoqueErrors({});
   };
 
-  // Handlers - Medicamentos
   const handleCreateMedicamento = async () => {
     setMedicamentoErrors({});
     try {
@@ -190,7 +182,6 @@ export function MedicamentosPage() {
     }
   };
 
-  // Handlers - Estoque
   const handleCreateEstoque = async () => {
     setEstoqueErrors({});
     try {
@@ -243,7 +234,6 @@ export function MedicamentosPage() {
     }
   };
 
-  // Helper functions
   const formatDate = (date: Date | null) => {
     if (!date) return "-";
     return new Date(date).toLocaleDateString("pt-BR");

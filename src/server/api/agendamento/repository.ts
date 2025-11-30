@@ -7,7 +7,6 @@ interface AgendamentoRow {
   motivo: string | null;
   status: string;
   data: Date;
-  // Campos adicionais da view
   data_agendamento?: Date;
   nome_paciente?: string;
   cpf_paciente?: string;
@@ -26,7 +25,6 @@ interface AgendamentoRow {
 export async function getAllAgendamentos(
   db: Pool,
 ): Promise<QueryResult<AgendamentoRow>> {
-  // Usando a view para obter dados detalhados
   return await db.query<AgendamentoRow>(
     "SELECT * FROM vw_agendamentos_detalhados ORDER BY data_agendamento DESC",
   );

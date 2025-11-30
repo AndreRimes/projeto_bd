@@ -166,7 +166,7 @@ JOIN Consulta c ON a.id_consulta = c.id_consulta
 JOIN Profissional prof ON c.id_profissional = prof.id_profissional
 JOIN Posto posto ON prof.id_posto = posto.id_posto;
 
--- Procedure: Registrar aplicação de vacina e atualizar estoque
+--- Procedure: Registrar aplicação de vacina e atualizar estoque
 CREATE OR REPLACE FUNCTION sp_registrar_aplicacao_vacina(
     p_id_paciente INT,
     p_id_vacina INT,

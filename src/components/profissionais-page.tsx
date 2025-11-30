@@ -81,11 +81,9 @@ export function ProfissionaisPage() {
 
   const utils = api.useUtils();
 
-  // Queries
   const { data: profissionais, isLoading } =
     api.profissional.getMyProfissionais.useQuery();
 
-  // Mutations
   const createMutation = api.profissional.create.useMutation({
     onSuccess: () => {
       utils.profissional.getMyProfissionais.invalidate();

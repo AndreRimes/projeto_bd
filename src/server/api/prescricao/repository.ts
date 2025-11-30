@@ -1,6 +1,5 @@
 import type { Pool, QueryResult } from "pg";
 
-// Prescrição
 interface PrescricaoRow {
   id_prescricao: number;
   id_consulta: number;
@@ -107,7 +106,6 @@ export async function deletePrescricao(
   ]);
 }
 
-// Prescreve (Relação Prescrição-Medicamento)
 interface PrescreveMedicamentoRow {
   id_medicamento: number;
   nome_medicamento: string;
@@ -154,12 +152,10 @@ export async function setMedicamentosPrescricao(
   medicamentosIds: number[],
   db: Pool,
 ): Promise<void> {
-  // Remove todos os medicamentos atuais
   await db.query("DELETE FROM prescreve WHERE id_prescricao = $1", [
     idPrescricao,
   ]);
 
-  // Adiciona os novos medicamentos
   if (medicamentosIds.length > 0) {
     const values = medicamentosIds.map((_, i) => `($1, $${i + 2})`).join(", ");
     await db.query(

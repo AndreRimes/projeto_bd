@@ -32,7 +32,6 @@ export default function DashboardPage() {
     }
   }, []);
 
-  // Queries para estatísticas
   const { data: pacientes } = api.paciente.getAll.useQuery();
   const { data: consultas } = api.consulta.getAll.useQuery();
   const { data: profissionais } = api.profissional.getMyProfissionais.useQuery();
@@ -42,22 +41,18 @@ export default function DashboardPage() {
   const { data: aplicacoesVacina } = api.aplicacaoVacina.getAll.useQuery();
   const { data: prescricoes } = api.prescricao.getAll.useQuery();
 
-  // Cálculos de estatísticas
   const totalPacientes = pacientes?.length ?? 0;
   const totalProfissionais = profissionais?.length ?? 0;
   const totalConsultas = consultas?.length ?? 0;
 
-  // Agendamentos pendentes
   const agendamentosPendentes =
     agendamentos?.filter((a) => a.status === "Agendado").length ?? 0;
 
-  // Consultas do mês atual
   const hoje = new Date();
   const primeiroDiaMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
   const consultasMes =
     consultas?.filter((c) => new Date(c.data) >= primeiroDiaMes).length ?? 0;
 
-  // Vacinas com estoque baixo
   const vacinasEstoqueBaixo =
     estoqueVacinas?.filter(
       (e) =>
@@ -66,7 +61,6 @@ export default function DashboardPage() {
         e.quantidade_disponivel <= e.quantidade_minima,
     ).length ?? 0;
 
-  // Medicamentos com estoque baixo
   const medicamentosEstoqueBaixo =
     estoqueMedicamentos?.filter(
       (e) =>
@@ -75,16 +69,13 @@ export default function DashboardPage() {
         e.quantidade_atual <= e.quantidade_minima,
     ).length ?? 0;
 
-  // Aplicações de vacina no mês
   const aplicacoesVacinaMes =
     aplicacoesVacina?.filter((a) => new Date(a.data) >= primeiroDiaMes)
       .length ?? 0;
 
-  // Prescrições no mês
   const prescricoesMes =
     prescricoes?.filter((p) => new Date(p.data) >= primeiroDiaMes).length ?? 0;
 
-  // Vacinas próximas ao vencimento (30 dias)
   const trintaDias = new Date();
   trintaDias.setDate(trintaDias.getDate() + 30);
   const vacinasVencendo =

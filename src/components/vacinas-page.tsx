@@ -41,7 +41,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
 
-// Schemas
 const vacinaSchema = z.object({
   nome: z.string().min(1, "Nome é obrigatório"),
   fabricante: z.string().optional(),
@@ -66,7 +65,6 @@ const aplicacaoVacinaSchema = z.object({
 });
 
 export function VacinasPage() {
-  // Estados para Vacinas
   const [isCreateVacinaOpen, setIsCreateVacinaOpen] = useState(false);
   const [isEditVacinaOpen, setIsEditVacinaOpen] = useState(false);
   const [isDeleteVacinaOpen, setIsDeleteVacinaOpen] = useState(false);
@@ -78,7 +76,6 @@ export function VacinasPage() {
   });
   const [vacinaErrors, setVacinaErrors] = useState<any>({});
 
-  // Estados para Estoque
   const [isCreateEstoqueOpen, setIsCreateEstoqueOpen] = useState(false);
   const [isEditEstoqueOpen, setIsEditEstoqueOpen] = useState(false);
   const [isDeleteEstoqueOpen, setIsDeleteEstoqueOpen] = useState(false);
@@ -91,7 +88,6 @@ export function VacinasPage() {
   });
   const [estoqueErrors, setEstoqueErrors] = useState<any>({});
 
-  // Estados para Aplicação
   const [isCreateAplicacaoOpen, setIsCreateAplicacaoOpen] = useState(false);
   const [isEditAplicacaoOpen, setIsEditAplicacaoOpen] = useState(false);
   const [isDeleteAplicacaoOpen, setIsDeleteAplicacaoOpen] = useState(false);
@@ -107,7 +103,6 @@ export function VacinasPage() {
 
   const utils = api.useUtils();
 
-  // Queries
   const { data: vacinas, isLoading: loadingVacinas } =
     api.vacina.getAll.useQuery();
   const { data: estoques, isLoading: loadingEstoques } =
@@ -117,7 +112,6 @@ export function VacinasPage() {
   const { data: pacientes } = api.paciente.getAll.useQuery();
   const { data: profissionais } = api.profissional.getMyProfissionais.useQuery();
 
-  // Mutations - Vacinas
   const createVacinaMutation = api.vacina.create.useMutation({
     onSuccess: () => {
       utils.vacina.getAll.invalidate();
@@ -143,7 +137,6 @@ export function VacinasPage() {
     },
   });
 
-  // Mutations - Estoque
   const createEstoqueMutation = api.estoqueVacina.create.useMutation({
     onSuccess: () => {
       utils.estoqueVacina.getAll.invalidate();
@@ -169,7 +162,6 @@ export function VacinasPage() {
     },
   });
 
-  // Mutations - Aplicação
   const createAplicacaoMutation = api.aplicacaoVacina.create.useMutation({
     onSuccess: () => {
       utils.aplicacaoVacina.getAll.invalidate();
@@ -195,7 +187,6 @@ export function VacinasPage() {
     },
   });
 
-  // Reset Forms
   const resetVacinaForm = () => {
     setVacinaFormData({
       nome: "",
@@ -226,7 +217,6 @@ export function VacinasPage() {
     setAplicacaoErrors({});
   };
 
-  // Handlers - Vacinas
   const handleCreateVacina = async () => {
     setVacinaErrors({});
     try {
@@ -273,7 +263,6 @@ export function VacinasPage() {
     }
   };
 
-  // Handlers - Estoque
   const handleCreateEstoque = async () => {
     setEstoqueErrors({});
     try {
@@ -326,7 +315,6 @@ export function VacinasPage() {
     }
   };
 
-  // Handlers - Aplicação
   const handleCreateAplicacao = async () => {
     setAplicacaoErrors({});
     try {
@@ -377,7 +365,6 @@ export function VacinasPage() {
     }
   };
 
-  // Helper functions
   const formatDate = (date: Date | null) => {
     if (!date) return "-";
     return new Date(date).toLocaleDateString("pt-BR");

@@ -47,8 +47,7 @@ export async function createConsulta(
   },
   db: Pool,
 ): Promise<QueryResult<ConsultaRow>> {
-  // IMPORTANTE: Se o diagnóstico for fornecido na criação, o trigger 'trigger_atualizar_agendamento_apos_consulta'
-  // automaticamente atualiza o status do agendamento relacionado para 'concluido'
+
 
   return await db.query<ConsultaRow>(
     `INSERT INTO consulta (id_profissional, observacoes, diagnostico, sintomas, data) 
@@ -75,8 +74,7 @@ export async function updateConsulta(
   },
   db: Pool,
 ): Promise<QueryResult<ConsultaRow>> {
-  // IMPORTANTE: Quando o diagnóstico é atualizado, o trigger 'trigger_atualizar_agendamento_apos_consulta'
-  // automaticamente atualiza o status do agendamento relacionado para 'concluido'
+
 
   const fields: string[] = [];
   const values: (string | number | Date)[] = [];

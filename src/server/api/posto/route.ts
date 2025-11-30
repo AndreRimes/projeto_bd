@@ -39,7 +39,6 @@ export const postoRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // Find user by matricula
       const result = await getPostByMatricula(input.matricula, ctx.db);
 
       if (result.rows.length === 0) {
@@ -51,7 +50,6 @@ export const postoRouter = createTRPCRouter({
 
       const posto = result.rows[0]!;
 
-      // Check if account is active
       if (!posto.ativo) {
         throw new TRPCError({
           code: "FORBIDDEN",
@@ -59,7 +57,6 @@ export const postoRouter = createTRPCRouter({
         });
       }
 
-      // Verify password
       const isPasswordValid = await bcrypt.compare(input.senha, posto.senha);
 
       if (!isPasswordValid) {
@@ -69,14 +66,12 @@ export const postoRouter = createTRPCRouter({
         });
       }
 
-      // Generate JWT token
       const token = generateToken({
         id_posto: posto.id_posto,
         matricula: posto.matricula,
         nome: posto.nome,
       });
 
-      // Return user data and token
       return {
         token,
         user: {

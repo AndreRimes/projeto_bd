@@ -96,12 +96,10 @@ export function AgendamentosPage() {
 
   const utils = api.useUtils();
 
-  // Queries
   const { data: agendamentos, isLoading } = api.agendamento.getAll.useQuery();
   const { data: pacientes } = api.paciente.getAll.useQuery();
   const { data: profissionais } = api.profissional.getMyProfissionais.useQuery();
 
-  // Mutations
   const createMutation = api.agendamento.create.useMutation({
     onSuccess: () => {
       utils.agendamento.getAll.invalidate();
@@ -254,7 +252,6 @@ export function AgendamentosPage() {
     return colors[status] || "bg-gray-100 text-gray-800";
   };
 
-  // Calendar helpers
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -302,12 +299,10 @@ export function AgendamentosPage() {
     const days = [];
     const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-    // Add empty cells for days before the first day of month
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="p-2 border border-border/50" />);
     }
 
-    // Add cells for each day of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const dayAgendamentos = getAgendamentosForDate(day);
       const today = isToday(day);

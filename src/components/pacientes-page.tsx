@@ -99,10 +99,8 @@ export function PacientesPage() {
 
   const utils = api.useUtils();
 
-  // Queries
   const { data: pacientes, isLoading } = api.paciente.getAll.useQuery();
 
-  // Mutations
   const createMutation = api.paciente.create.useMutation({
     onSuccess: () => {
       utils.paciente.getAll.invalidate();

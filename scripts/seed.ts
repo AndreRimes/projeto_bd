@@ -11,14 +11,11 @@ async function seed() {
   try {
     console.log("🌱 Iniciando seed do banco de dados...");
 
-    // Deletar postos existentes
     await db.query("DELETE FROM Posto");
     console.log("🗑️  Postos existentes deletados");
 
-    // Criar senha hash
     const senhaHash = await bcrypt.hash("admin123", 10);
 
-    // Inserir posto de exemplo
     const result = await db.query(
       `INSERT INTO Posto (nome, matricula, senha, telefone, endereco, email, ativo)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
@@ -41,7 +38,6 @@ async function seed() {
       console.log("   Senha: admin123");
     }
 
-    // Inserir mais postos de exemplo
     await db.query(
       `INSERT INTO Posto (nome, matricula, senha, telefone, endereco, email, ativo)
        VALUES 

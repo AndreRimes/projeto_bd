@@ -58,7 +58,6 @@ export const pacienteRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // Check if CPF already exists
       const existing = await getPacienteByCpf(input.cpf, ctx.db);
       if (existing.rows.length > 0) {
         throw new TRPCError({
@@ -107,7 +106,6 @@ export const pacienteRouter = createTRPCRouter({
         });
       }
 
-      // If updating CPF, check if it's not already in use by another patient
       if (input.cpf && input.cpf !== existing.rows[0]!.cpf) {
         const cpfExists = await getPacienteByCpf(input.cpf, ctx.db);
         if (cpfExists.rows.length > 0) {

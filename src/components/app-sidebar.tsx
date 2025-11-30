@@ -63,7 +63,6 @@ export function AppSidebar() {
   const [posto, setPosto] = useState<{ nome: string; endereco?: string } | null>(null);
 
   useEffect(() => {
-    // Get posto info from localStorage
     const userStr = localStorage.getItem("user");
     if (userStr) {
       try {

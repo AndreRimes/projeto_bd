@@ -24,7 +24,6 @@ export default function DashboardLayout({
     setIsAuthenticated(true);
   }, [router]);
 
-  // Não renderiza nada enquanto verifica autenticação
   if (!isAuthenticated) {
     return null;
   }

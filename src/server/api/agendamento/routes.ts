@@ -69,7 +69,6 @@ export const agendamentoRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      // First, create the consulta
       const consultaResult = await createConsulta(
         {
           id_profissional: input.id_profissional,
@@ -90,7 +89,6 @@ export const agendamentoRouter = createTRPCRouter({
 
       const consulta = consultaResult.rows[0]!;
 
-      // Then, create the agendamento with the consulta id
       const result = await createAgendamento(
         {
           id_paciente: input.id_paciente,

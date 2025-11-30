@@ -41,7 +41,6 @@ export function LoginPosto() {
 
   const loginMutation = api.posto.login.useMutation();
 
-  // Verificar se já está logado
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
     if (token) {
@@ -60,7 +59,6 @@ export function LoginPosto() {
 
       const result = await loginMutation.mutateAsync(validatedData); 
 
-      // Store JWT token in localStorage
       if (result.token) {
         localStorage.setItem("auth_token", result.token);
         localStorage.setItem("user", JSON.stringify(result.user));

@@ -15,7 +15,6 @@ import {
 
 export const prescricaoRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
-    // Buscar prescrições das consultas do posto
     const result = await ctx.db.query(
       `SELECT DISTINCT p.id_prescricao, p.id_consulta, p.data, p.conteudo
        FROM prescricao p
@@ -83,7 +82,6 @@ export const prescricaoRouter = createTRPCRouter({
 
       const prescricao = result.rows[0];
 
-      // Adicionar medicamentos se fornecidos
       if (medicamentos && medicamentos.length > 0 && prescricao) {
         await setMedicamentosPrescricao(
           prescricao.id_prescricao,
@@ -117,12 +115,10 @@ export const prescricaoRouter = createTRPCRouter({
 
       const { id, medicamentos, ...updateData } = input;
 
-      // Atualizar medicamentos se fornecidos
       if (medicamentos !== undefined) {
         await setMedicamentosPrescricao(id, medicamentos, ctx.db);
       }
 
-      // Atualizar prescrição se houver campos para atualizar
       if (Object.keys(updateData).length > 0) {
         const result = await updatePrescricao(id, updateData, ctx.db);
 

@@ -1,6 +1,5 @@
 import type { Pool, QueryResult } from "pg";
 
-// Medicamento
 interface MedicamentoRow {
   id_medicamento: number;
   nome: string;
@@ -79,7 +78,6 @@ export async function deleteMedicamento(
   ]);
 }
 
-// Estoque Medicamentos
 interface EstoqueMedicamentosRow {
   id_estoque: number;
   id_posto: number;

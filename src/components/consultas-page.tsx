@@ -95,12 +95,10 @@ export function ConsultasPage() {
 
   const utils = api.useUtils();
 
-  // Queries
   const { data: consultas, isLoading } = api.consulta.getAll.useQuery();
   const { data: profissionais } =
     api.profissional.getMyProfissionais.useQuery();
 
-  // Mutations
   const createMutation = api.consulta.create.useMutation({
     onSuccess: () => {
       utils.consulta.getAll.invalidate();
@@ -231,7 +229,6 @@ export function ConsultasPage() {
     });
   };
 
-  // Calendar helpers
   const getDaysInMonth = (date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth();
@@ -279,12 +276,10 @@ export function ConsultasPage() {
     const days = [];
     const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-    // Add empty cells for days before the first day of month
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="p-2 border border-border/50" />);
     }
 
-    // Add cells for each day of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const dayConsultas = getConsultasForDate(day);
       const today = isToday(day);

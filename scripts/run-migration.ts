@@ -12,7 +12,6 @@ async function runMigration() {
   try {
     console.log("🚀 Executando migrações do banco de dados...");
 
-    // Create migrations tracking table if it doesn't exist
     await db.query(`
       CREATE TABLE IF NOT EXISTS _migrations (
         id SERIAL PRIMARY KEY,
@@ -32,7 +31,6 @@ async function runMigration() {
       process.exit(0);
     }
 
-    // Get already executed migrations
     const { rows: executedMigrations } = await db.query(
       "SELECT filename FROM _migrations",
     );
