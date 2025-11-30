@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
@@ -41,6 +41,14 @@ export function LoginPosto() {
 
   const loginMutation = api.posto.login.useMutation();
 
+  // Verificar se já está logado
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -58,7 +66,7 @@ export function LoginPosto() {
         localStorage.setItem("user", JSON.stringify(result.user));
       }
 
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
       
     } catch (err) {

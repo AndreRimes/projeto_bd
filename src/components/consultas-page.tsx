@@ -1,6 +1,5 @@
-"use client";
-
-import { Calendar, ChevronLeft, ChevronRight, List, Pencil, Plus, Trash2 } from "lucide-react";
+'use client';
+import { Calendar, ChevronLeft, ChevronRight, FileText, List, Pencil, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
@@ -32,6 +31,7 @@ import {
 } from "~/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { api } from "~/trpc/react";
+import { PrescricoesPage } from "./prescricoes-page";
 
 const consultaSchema = z.object({
   id_profissional: z.number().positive("Profissional é obrigatório"),
@@ -44,7 +44,18 @@ const consultaSchema = z.object({
   }),
 });
 
+const prescricaoSchema = z.object({
+  id_consulta: z.number().positive("Consulta é obrigatória"),
+  data: z.date({
+    required_error: "Data é obrigatória",
+    invalid_type_error: "Data inválida",
+  }),
+  conteudo: z.string().optional(),
+  medicamentos: z.array(z.number()).optional(),
+});
+
 type ConsultaFormData = z.infer<typeof consultaSchema>;
+type PrescricaoFormData = z.infer<typeof prescricaoSchema>;
 
 export function ConsultasPage() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -399,7 +410,7 @@ export function ConsultasPage() {
                 <Label htmlFor="create-sintomas">Sintomas (opcional)</Label>
                 <textarea
                   id="create-sintomas"
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   placeholder="Descreva os sintomas apresentados"
                   value={formData.sintomas}
                   onChange={(e) =>
@@ -413,7 +424,7 @@ export function ConsultasPage() {
                 </Label>
                 <textarea
                   id="create-diagnostico"
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   placeholder="Descreva o diagnóstico"
                   value={formData.diagnostico}
                   onChange={(e) =>
@@ -427,7 +438,7 @@ export function ConsultasPage() {
                 </Label>
                 <textarea
                   id="create-observacoes"
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   placeholder="Observações adicionais"
                   value={formData.observacoes}
                   onChange={(e) =>
@@ -466,6 +477,10 @@ export function ConsultasPage() {
           <TabsTrigger value="calendar" className="gap-2">
             <Calendar className="h-4 w-4" />
             Calendário
+          </TabsTrigger>
+          <TabsTrigger value="prescricoes" className="gap-2">
+            <FileText className="h-4 w-4" />
+            Prescrições
           </TabsTrigger>
         </TabsList>
 
@@ -591,6 +606,10 @@ export function ConsultasPage() {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="prescricoes" className="space-y-4">
+          <PrescricoesPage />
+        </TabsContent>
       </Tabs>
 
       {/* Edit Dialog */}
@@ -647,7 +666,7 @@ export function ConsultasPage() {
               <Label htmlFor="edit-sintomas">Sintomas (opcional)</Label>
               <textarea
                 id="edit-sintomas"
-                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 placeholder="Descreva os sintomas apresentados"
                 value={formData.sintomas}
                 onChange={(e) =>
@@ -659,7 +678,7 @@ export function ConsultasPage() {
               <Label htmlFor="edit-diagnostico">Diagnóstico (opcional)</Label>
               <textarea
                 id="edit-diagnostico"
-                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 placeholder="Descreva o diagnóstico"
                 value={formData.diagnostico}
                 onChange={(e) =>
@@ -671,7 +690,7 @@ export function ConsultasPage() {
               <Label htmlFor="edit-observacoes">Observações (opcional)</Label>
               <textarea
                 id="edit-observacoes"
-                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                className="flex min-h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 placeholder="Observações adicionais"
                 value={formData.observacoes}
                 onChange={(e) =>

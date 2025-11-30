@@ -1,21 +1,22 @@
 "use client";
 
-import { Calendar, CalendarCheck, Home, Pill, Syringe, User, UserRound } from "lucide-react";
+import { Calendar, CalendarCheck, Home, MapPin, Pill, Syringe, User, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarTrigger,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarTrigger,
 } from "~/components/ui/sidebar";
 
 const menuItems = [
@@ -59,6 +60,23 @@ const menuItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const [posto, setPosto] = useState<{ nome: string; endereco?: string } | null>(null);
+
+  useEffect(() => {
+    // Get posto info from localStorage
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setPosto({
+          nome: user.nome || "Posto de Saúde",
+          endereco: user.endereco,
+        });
+      } catch (error) {
+        console.error("Error parsing user data:", error);
+      }
+    }
+  }, []);
 
   return (
     <Sidebar>
@@ -72,6 +90,21 @@ export function AppSidebar() {
             <span className="text-xs text-muted-foreground">Dashboard</span>
           </div>
         </div>
+        {posto && (
+          <div className="mt-3 rounded-lg bg-muted/50 p-3">
+            <div className="flex items-start gap-2">
+              <MapPin className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
+              <div className="flex flex-col min-w-0">
+                <span className="text-sm font-medium truncate">{posto.nome}</span>
+                {posto.endereco && (
+                  <span className="text-xs text-muted-foreground line-clamp-2">
+                    {posto.endereco}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

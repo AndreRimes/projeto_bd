@@ -1,9 +1,17 @@
 import { createCallerFactory, createTRPCRouter } from "~/server/api/trpc";
 import { agendamentoRouter } from "./agendamento/routes";
+import { aplicacaoVacinaRouter } from "./aplicacao_vacina/routes";
 import { consultaRouter } from "./consulta/routes";
+import { estoqueVacinaRouter } from "./estoque_vacina/routes";
+import {
+  estoqueMedicamentosRouter,
+  medicamentoRouter,
+} from "./medicamentos/routes";
 import { pacienteRouter } from "./paciente/routes";
 import { postoRouter } from "./posto/route";
+import { prescricaoRouter } from "./prescricao/route";
 import { profissionalRouter } from "./profissional/routes";
+import { vacinaRouter } from "./vacina/routes";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +24,12 @@ export const appRouter = createTRPCRouter({
   consulta: consultaRouter,
   agendamento: agendamentoRouter,
   paciente: pacienteRouter,
+  vacina: vacinaRouter,
+  estoqueVacina: estoqueVacinaRouter,
+  aplicacaoVacina: aplicacaoVacinaRouter,
+  medicamento: medicamentoRouter,
+  estoqueMedicamentos: estoqueMedicamentosRouter,
+  prescricao: prescricaoRouter,
 });
 
 // export type definition of API

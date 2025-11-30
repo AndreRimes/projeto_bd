@@ -1,3 +1,7 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { AppSidebar } from "~/components/app-sidebar";
 import { SidebarProvider } from "~/components/ui/sidebar";
 
@@ -6,6 +10,25 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    
+    if (!token) {
+      router.push("/");
+      return;
+    }
+    
+    setIsAuthenticated(true);
+  }, [router]);
+
+  // Não renderiza nada enquanto verifica autenticação
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
