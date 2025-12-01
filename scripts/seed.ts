@@ -193,33 +193,33 @@ async function seed() {
         observacoes: "Paciente com febre",
         diagnostico: "Gripe",
         sintomas: "Febre, tosse, dor de cabeça",
-        data: "2025-12-05 10:00:00",
+        data: "2025-11-25 10:00:00", // Consulta passada - tem diagnóstico
       },
       {
         id_profissional: profissionais[1],
         observacoes: "Consulta de rotina",
         diagnostico: "Saudável",
         sintomas: "Nenhum",
-        data: "2025-12-10 14:00:00",
+        data: "2025-11-28 14:00:00", // Consulta passada - tem diagnóstico
       },
       {
         id_profissional: profissionais[2],
         observacoes: "Pressão alta",
-        diagnostico: "Hipertensão",
+        diagnostico: null, // Consulta futura - sem diagnóstico ainda
         sintomas: "Dor de cabeça, tontura",
         data: "2025-12-15 09:00:00",
       },
       {
         id_profissional: profissionais[0],
         observacoes: "Dor abdominal",
-        diagnostico: "Gastrite",
+        diagnostico: null, // Consulta futura - sem diagnóstico ainda
         sintomas: "Dor no estômago, azia",
         data: "2025-12-20 11:00:00",
       },
       {
         id_profissional: profissionais[1],
         observacoes: "Vacinação infantil",
-        diagnostico: null,
+        diagnostico: null, // Consulta de vacinação - não tem diagnóstico
         sintomas: "Nenhum",
         data: "2026-01-08 15:00:00",
       },
@@ -248,35 +248,35 @@ async function seed() {
         id_paciente: pacientes[0],
         id_consulta: consultas[0],
         motivo: "Consulta de rotina",
-        status: "pendente",
-        data: "2025-12-05 10:00:00",
+        status: "concluido", // Consulta já realizada
+        data: "2025-11-25 10:00:00",
       },
       {
         id_paciente: pacientes[1],
         id_consulta: consultas[1],
         motivo: "Check-up",
-        status: "pendente",
-        data: "2025-12-10 14:00:00",
+        status: "concluido", // Consulta já realizada
+        data: "2025-11-28 14:00:00",
       },
       {
         id_paciente: pacientes[2],
         id_consulta: consultas[2],
         motivo: "Pressão alta",
-        status: "pendente",
+        status: "pendente", // Consulta futura
         data: "2025-12-15 09:00:00",
       },
       {
         id_paciente: pacientes[3],
         id_consulta: consultas[3],
         motivo: "Dor no estômago",
-        status: "pendente",
+        status: "pendente", // Consulta futura
         data: "2025-12-20 11:00:00",
       },
       {
         id_paciente: pacientes[4],
         id_consulta: consultas[4],
         motivo: "Vacinação",
-        status: "pendente",
+        status: "pendente", // Consulta futura
         data: "2026-01-08 15:00:00",
       },
     ];
@@ -498,27 +498,17 @@ async function seed() {
     const prescricoesData = [
       {
         id_consulta: consultas[0],
-        data: "2025-12-05 10:30:00",
+        data: "2025-11-25 10:30:00",
         conteudo: "Paracetamol 500mg - 1 comprimido a cada 6 horas",
       },
       {
         id_consulta: consultas[1],
-        data: "2025-12-10 14:30:00",
+        data: "2025-11-28 14:30:00",
         conteudo: "Complexo vitamínico - 1 cápsula ao dia",
       },
       {
-        id_consulta: consultas[2],
-        data: "2025-12-15 09:30:00",
-        conteudo: "Losartana 50mg - 1 comprimido ao dia",
-      },
-      {
-        id_consulta: consultas[3],
-        data: "2025-12-20 11:30:00",
-        conteudo: "Omeprazol 20mg - 1 cápsula em jejum",
-      },
-      {
         id_consulta: consultas[0],
-        data: "2025-12-05 10:35:00",
+        data: "2025-11-25 10:35:00",
         conteudo: "Dipirona 500mg - 1 comprimido se necessário",
       },
     ];
@@ -536,11 +526,10 @@ async function seed() {
 
     // Criar relacionamentos Prescreve (medicamentos nas prescrições)
     const prescreveData = [
-      { id_medicamento: medicamentos[0], id_prescricao: prescricoes[0] },
-      { id_medicamento: medicamentos[4], id_prescricao: prescricoes[3] },
-      { id_medicamento: medicamentos[3], id_prescricao: prescricoes[4] },
-      { id_medicamento: medicamentos[1], id_prescricao: prescricoes[0] },
-      { id_medicamento: medicamentos[2], id_prescricao: prescricoes[1] },
+      { id_medicamento: medicamentos[0], id_prescricao: prescricoes[0] }, // Paracetamol
+      { id_medicamento: medicamentos[3], id_prescricao: prescricoes[0] }, // Dipirona na mesma prescrição
+      { id_medicamento: medicamentos[1], id_prescricao: prescricoes[1] }, // Ibuprofeno
+      { id_medicamento: medicamentos[3], id_prescricao: prescricoes[2] }, // Dipirona
     ];
 
     for (const pres of prescreveData) {
