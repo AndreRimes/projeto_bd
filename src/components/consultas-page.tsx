@@ -306,7 +306,7 @@ export function ConsultasPage() {
                   })}
                 </div>
                 <div className="text-muted-foreground truncate">
-                  {getProfissionalNome(consulta.id_profissional)}
+                  {consulta.nome_profissional || getProfissionalNome(consulta.id_profissional)}
                 </div>
               </button>
             ))}
@@ -513,7 +513,7 @@ export function ConsultasPage() {
                           </div>
                         </TableCell>
                         <TableCell>
-                          {getProfissionalNome(consulta.id_profissional)}
+                          {consulta.nome_profissional || getProfissionalNome(consulta.id_profissional)}
                         </TableCell>
                         <TableCell>
                           <div className="max-w-[200px] truncate">

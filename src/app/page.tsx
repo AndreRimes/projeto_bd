@@ -11,12 +11,12 @@ export default function Page() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("auth_token");
+    localStorage.removeItem("token");
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     router.refresh();

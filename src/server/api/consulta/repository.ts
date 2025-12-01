@@ -7,13 +7,26 @@ interface ConsultaRow {
   diagnostico: string | null;
   sintomas: string | null;
   data: Date;
+  nome_profissional?: string;
+  especialidade?: string;
 }
 
 export async function getAllConsultas(
   db: Pool,
 ): Promise<QueryResult<ConsultaRow>> {
   return await db.query<ConsultaRow>(
-    "SELECT id_consulta, id_profissional, observacoes, diagnostico, sintomas, data FROM consulta ORDER BY data DESC",
+    `SELECT 
+      c.id_consulta, 
+      c.id_profissional, 
+      c.observacoes, 
+      c.diagnostico, 
+      c.sintomas, 
+      c.data,
+      p.nome as nome_profissional,
+      p.especialidade
+    FROM consulta c
+    LEFT JOIN profissional p ON c.id_profissional = p.id_profissional
+    ORDER BY c.data DESC`,
   );
 }
 
@@ -47,8 +60,6 @@ export async function createConsulta(
   },
   db: Pool,
 ): Promise<QueryResult<ConsultaRow>> {
-
-
   return await db.query<ConsultaRow>(
     `INSERT INTO consulta (id_profissional, observacoes, diagnostico, sintomas, data) 
      VALUES ($1, $2, $3, $4, $5) 
@@ -74,8 +85,6 @@ export async function updateConsulta(
   },
   db: Pool,
 ): Promise<QueryResult<ConsultaRow>> {
-
-
   const fields: string[] = [];
   const values: (string | number | Date)[] = [];
   let paramCount = 1;

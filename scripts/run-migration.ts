@@ -1,12 +1,11 @@
+import "dotenv/config";
 import { readFileSync, readdirSync } from "fs";
 import { join } from "path";
 import { Pool } from "pg";
 
 async function runMigration() {
   const db = new Pool({
-    connectionString:
-      process.env.DATABASE_URL ||
-      "postgresql://postgres:w5LT3fc8Bqgv6aTs@localhost:5432/projeto_bd",
+    connectionString: process.env.DATABASE_URL,
   });
 
   try {

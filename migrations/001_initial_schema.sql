@@ -66,7 +66,7 @@ CREATE TABLE Paciente (
     telefone VARCHAR(50),
     endereco VARCHAR(255),
     data_nasc DATE,
-    foto VARCHAR(255)
+    foto TEXT
 );
 
 -- Tabela Agendamento

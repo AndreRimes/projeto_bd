@@ -1,8 +1,8 @@
 "use client";
 
-import { Calendar, CalendarCheck, Home, MapPin, Pill, Syringe, User, UserRound } from "lucide-react";
+import { Calendar, CalendarCheck, Home, LogOut, MapPin, Pill, Syringe, User, UserRound } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -60,6 +60,7 @@ const menuItems = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [posto, setPosto] = useState<{ nome: string; endereco?: string } | null>(null);
 
   useEffect(() => {
@@ -76,6 +77,12 @@ export function AppSidebar() {
       }
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    router.push("/login");
+  };
 
   return (
     <Sidebar>
@@ -132,7 +139,14 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="border-t p-4">
-        <div className="flex items-center justify-between">
+        <button
+          onClick={handleLogout}
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Sair</span>
+        </button>
+        <div className="flex items-center justify-between mt-2">
           <span className="text-xs text-muted-foreground">v1.0.0</span>
           <SidebarTrigger />
         </div>

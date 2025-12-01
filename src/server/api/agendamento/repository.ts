@@ -26,7 +26,15 @@ export async function getAllAgendamentos(
   db: Pool,
 ): Promise<QueryResult<AgendamentoRow>> {
   return await db.query<AgendamentoRow>(
-    "SELECT * FROM vw_agendamentos_detalhados ORDER BY data_agendamento DESC",
+    `SELECT 
+      id_agendamento, 
+      id_paciente, 
+      id_consulta, 
+      motivo, 
+      status, 
+      data_agendamento as data
+    FROM vw_agendamentos_detalhados 
+    ORDER BY data_agendamento DESC`,
   );
 }
 

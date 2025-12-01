@@ -5,30 +5,30 @@ import { useState } from "react";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "~/components/ui/card";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "~/components/ui/table";
 import { api } from "~/trpc/react";
 
@@ -52,7 +52,6 @@ const pacienteSchema = z.object({
   data_nasc: z.date().optional(),
   foto: z
     .string()
-    .max(255, "URL da foto deve ter no máximo 255 caracteres")
     .optional(),
 });
 
@@ -87,6 +86,9 @@ export function PacientesPage() {
     data_nasc: "",
     foto: "",
   });
+
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
 
   const [validationErrors, setValidationErrors] = useState<{
     cpf?: string;
@@ -136,6 +138,36 @@ export function PacientesPage() {
       foto: "",
     });
     setValidationErrors({});
+    setImageFile(null);
+    setImagePreview("");
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validar tamanho (máx 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("A imagem deve ter no máximo 5MB");
+        return;
+      }
+
+      // Validar tipo
+      if (!file.type.startsWith("image/")) {
+        alert("Por favor, selecione uma imagem válida");
+        return;
+      }
+
+      setImageFile(file);
+
+      // Criar preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImagePreview(base64String);
+        setFormData({ ...formData, foto: base64String });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleCreate = async () => {
@@ -212,6 +244,8 @@ export function PacientesPage() {
         : "",
       foto: paciente.foto ?? "",
     });
+    setImagePreview(paciente.foto ?? "");
+    setImageFile(null);
     setIsEditDialogOpen(true);
   };
 
@@ -333,15 +367,22 @@ export function PacientesPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="create-foto">URL da Foto (opcional)</Label>
+                <Label htmlFor="create-foto">Foto (opcional)</Label>
                 <Input
                   id="create-foto"
-                  placeholder="https://exemplo.com/foto.jpg"
-                  value={formData.foto}
-                  onChange={(e) =>
-                    setFormData({ ...formData, foto: e.target.value })
-                  }
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
                 />
+                {imagePreview && (
+                  <div className="mt-2">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="h-32 w-32 rounded-lg object-cover border"
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <DialogFooter>
@@ -530,15 +571,35 @@ export function PacientesPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-foto">URL da Foto (opcional)</Label>
+              <Label htmlFor="edit-foto">Foto (opcional)</Label>
               <Input
                 id="edit-foto"
-                placeholder="https://exemplo.com/foto.jpg"
-                value={formData.foto}
-                onChange={(e) =>
-                  setFormData({ ...formData, foto: e.target.value })
-                }
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
               />
+              {imagePreview && (
+                <div className="mt-2">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-32 w-32 rounded-lg object-cover border"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      setImagePreview("");
+                      setFormData({ ...formData, foto: "" });
+                      setImageFile(null);
+                    }}
+                  >
+                    Remover Foto
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
           <DialogFooter>

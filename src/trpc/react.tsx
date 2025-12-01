@@ -56,9 +56,8 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             const headers = new Headers();
             headers.set("x-trpc-source", "nextjs-react");
             
-            // Adiciona automaticamente o token JWT se existir
             if (typeof window !== "undefined") {
-              const token = localStorage.getItem("auth_token");
+              const token = localStorage.getItem("token");
               if (token) {
                 headers.set("authorization", `Bearer ${token}`);
               }

@@ -233,7 +233,9 @@ export function AgendamentosPage() {
   };
 
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleString("pt-BR", {
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return "Data inválida";
+    return d.toLocaleString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -277,6 +279,7 @@ export function AgendamentosPage() {
     return agendamentos.filter((agendamento) => {
       const agendamentoDate = new Date(agendamento.data);
       return (
+        !isNaN(agendamentoDate.getTime()) &&
         agendamentoDate.getDate() === day &&
         agendamentoDate.getMonth() === currentDate.getMonth() &&
         agendamentoDate.getFullYear() === currentDate.getFullYear()
@@ -323,10 +326,13 @@ export function AgendamentosPage() {
                 className="w-full text-left text-xs p-1 rounded bg-primary/10 hover:bg-primary/20 transition-colors truncate"
               >
                 <div className="font-medium truncate">
-                  {new Date(agendamento.data).toLocaleTimeString("pt-BR", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  {(() => {
+                    const d = new Date(agendamento.data);
+                    return isNaN(d.getTime()) ? "--:--" : d.toLocaleTimeString("pt-BR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    });
+                  })()}
                 </div>
                 <div className="text-muted-foreground truncate">
                   {getPacienteNome(agendamento.id_paciente)}

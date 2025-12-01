@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -42,7 +43,7 @@ export function LoginPosto() {
   const loginMutation = api.posto.login.useMutation();
 
   useEffect(() => {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("token");
     if (token) {
       router.push("/dashboard");
     }
@@ -60,7 +61,7 @@ export function LoginPosto() {
       const result = await loginMutation.mutateAsync(validatedData); 
 
       if (result.token) {
-        localStorage.setItem("auth_token", result.token);
+        localStorage.setItem("token", result.token);
         localStorage.setItem("user", JSON.stringify(result.user));
       }
 
@@ -141,8 +142,16 @@ export function LoginPosto() {
             </Button>
           </form>
 
-          <div className="mt-4 text-center text-sm text-gray-500">
-            <p>Esqueceu sua senha? Entre em contato com o administrador.</p>
+          <div className="mt-4 space-y-2 text-center text-sm">
+            <p className="text-gray-500">
+              Não tem uma conta?{" "}
+              <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+                Cadastre seu posto
+              </Link>
+            </p>
+            <p className="text-gray-500">
+              Esqueceu sua senha? Entre em contato com o administrador.
+            </p>
           </div>
         </CardContent>
       </Card>
