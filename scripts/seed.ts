@@ -511,6 +511,16 @@ async function seed() {
         data: "2025-11-25 10:35:00",
         conteudo: "Dipirona 500mg - 1 comprimido se necessário",
       },
+      {
+        id_consulta: consultas[1],
+        data: "2025-11-28 14:35:00",
+        conteudo: "Ibuprofeno 400mg - 1 comprimido a cada 8 horas se dor",
+      },
+      {
+        id_consulta: consultas[0],
+        data: "2025-11-25 10:40:00",
+        conteudo: "Repouso e hidratação abundante",
+      },
     ];
 
     for (const presc of prescricoesData) {
@@ -527,9 +537,10 @@ async function seed() {
     // Criar relacionamentos Prescreve (medicamentos nas prescrições)
     const prescreveData = [
       { id_medicamento: medicamentos[0], id_prescricao: prescricoes[0] }, // Paracetamol
-      { id_medicamento: medicamentos[3], id_prescricao: prescricoes[0] }, // Dipirona na mesma prescrição
-      { id_medicamento: medicamentos[1], id_prescricao: prescricoes[1] }, // Ibuprofeno
       { id_medicamento: medicamentos[3], id_prescricao: prescricoes[2] }, // Dipirona
+      { id_medicamento: medicamentos[1], id_prescricao: prescricoes[3] }, // Ibuprofeno
+      { id_medicamento: medicamentos[2], id_prescricao: prescricoes[1] }, // Amoxicilina
+      { id_medicamento: medicamentos[4], id_prescricao: prescricoes[1] }, // Omeprazol
     ];
 
     for (const pres of prescreveData) {

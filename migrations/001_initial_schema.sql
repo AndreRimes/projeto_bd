@@ -184,44 +184,36 @@ DECLARE
     v_quantidade_disponivel INT;
     v_id_estoque_vacina INT;
 BEGIN
-    -- Verificar se existe estoque da vacina no posto
     SELECT id_estoque_vacina, quantidade_disponivel 
     INTO v_id_estoque_vacina, v_quantidade_disponivel
     FROM Estoque_vacina
     WHERE id_posto = p_id_posto AND id_vacina = p_id_vacina;
 
-    -- Se não existe estoque, retornar erro
     IF v_id_estoque_vacina IS NULL THEN
         RETURN QUERY SELECT NULL::INT, FALSE, 'Vacina não disponível no estoque deste posto'::TEXT;
         RETURN;
     END IF;
 
-    -- Verificar se há quantidade disponível
     IF v_quantidade_disponivel <= 0 THEN
         RETURN QUERY SELECT NULL::INT, FALSE, 'Estoque insuficiente da vacina'::TEXT;
         RETURN;
     END IF;
 
-    -- Inserir a aplicação da vacina
     INSERT INTO AplicacaoVacina (id_paciente, id_vacina, id_posto, id_profissional, data, numero_dose)
     VALUES (p_id_paciente, p_id_vacina, p_id_posto, p_id_profissional, p_data, p_numero_dose)
     RETURNING AplicacaoVacina.id_aplicacao INTO v_id_aplicacao;
 
-    -- Atualizar o estoque (decrementar)
     UPDATE Estoque_vacina
     SET quantidade_disponivel = quantidade_disponivel - 1
     WHERE id_estoque_vacina = v_id_estoque_vacina;
 
-    -- Retornar sucesso
     RETURN QUERY SELECT v_id_aplicacao, TRUE, 'Aplicação registrada e estoque atualizado com sucesso'::TEXT;
 END;
 $$ LANGUAGE plpgsql;
 
--- Trigger: Atualizar status do agendamento quando consulta for concluída
 CREATE OR REPLACE FUNCTION trg_atualizar_status_agendamento()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Se o diagnóstico foi preenchido/atualizado, marca o agendamento como concluído
     IF NEW.diagnostico IS NOT NULL AND NEW.diagnostico != '' THEN
         UPDATE Agendamento
         SET status = 'concluido'
